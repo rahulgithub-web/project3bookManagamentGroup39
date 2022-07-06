@@ -35,5 +35,5 @@ const authorise = async function (req, res, next) {
   };
   
 
-module.exports = { authenticate };
-module.exports = { authorise };
+module.exports.authenticate = authenticate;
+module.exports.authorise = authorise;

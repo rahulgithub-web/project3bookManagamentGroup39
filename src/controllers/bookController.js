@@ -62,4 +62,4 @@ const createBook = async function (req, res) {
 }
 
 
-module.exports = { createBook };
+module.exports.createBook = createBook;
