@@ -95,17 +95,22 @@ const userLogin = async function (req, res) {
   try {
     const data = req.body;
     const { email, password } = data;
-    let getUsersData = await userModel.findOne({ email, password });
-    
+    if (Object.keys(data).length == 0) {
+        return res
+          .status(400)
+          .send({ status: false, msg: "All fields are mandatory." });
+      }
+    let getUsersData = await userModel.findOne({ email:email, password:password });
     let token = jwt.sign(
       {
         userId: getUsersData._id.toString(),
         iat: Math.floor(Date.now() / 1000), //issue date
         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, //expires in 24 hr
+        expiresIn: "1hr",
       },
       "group-39"
     );
-    //   {iat, exp, userId} = data.token
+    //   data.token = { exp, userId, expiresIn};
     res.setHeader("x-api-key", token);
     res
       .status(200)
@@ -114,7 +119,7 @@ const userLogin = async function (req, res) {
         message: "Author Login Succesful",
         data: { token },
       });
-    // console.log(token , data._id, data.token.iat, data.token.exp);
+    // console.log(token, iat);
   } catch (err) {
     res.status(500).send({ status: false, message: err.message });
   }
