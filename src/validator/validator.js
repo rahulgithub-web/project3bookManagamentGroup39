@@ -45,9 +45,22 @@ const isEmpty = function (value) {
   return true;
 };
 
+// ObjectId  
 const isValidObjectId = (objectId) => {
   return mongoose.Types.ObjectId.isValid(objectId);
 };
+
+// ISBN validation   
+const isValidISBN = (ISBN) => {
+    const ISBNregex = /^[0-9 ]{13}$/; 
+    return ISBNregex.test(ISBN);
+}
+
+// excerpt Validation  
+const isValidExcerpt = (excerpt) => {
+    const excerptRegex = /^[A-Za-z,]+$/;
+    return excerptRegex.test(excerpt);
+}
 
 module.exports = {
   isEmpty,
@@ -57,5 +70,7 @@ module.exports = {
   isValidPassword,
   isValidPinCode,
   isValidTitle,
+  isValidISBN,
   isValidObjectId,
+  isValidExcerpt,
 };

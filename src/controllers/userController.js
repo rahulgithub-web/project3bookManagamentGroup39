@@ -84,7 +84,7 @@ const createUser = async function (req, res) {
     let userCreated = await userModel.create(userDetails);
     res.status(201).send({ status: true, data: userCreated });
   } catch (err) {
-    return res.status(500).send({ msg: err.message });
+    return res.status(500).send({status: false, msg: err.message });
   }
 };
 
@@ -120,7 +120,6 @@ const userLogin = async function (req, res) {
         userId: getUsersData._id.toString(),
         iat: Math.floor(Date.now() / 1000), //issue date
         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, //expires in 24 hr
-        expiresIn: "1hr",
       },
       "group-39"
     );
