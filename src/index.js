@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const route = require("../src/routes/routes");
+const route = require("./routes/routes");
 const app = express();
 const { default: mongoose } = require("mongoose");
 
@@ -20,5 +20,6 @@ mongoose
 app.use('/', route);  
 
 app.listen(port, function() {
-    console.log("Express is running on port" + port)
+    console.log("Express is running on port " + port)
 });
+
