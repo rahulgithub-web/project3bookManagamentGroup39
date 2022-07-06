@@ -1,57 +1,124 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 const userModel = require("../models/userModel");
+const validation = require("../validator/validator");
 
+let {
+  isEmpty,
+  isValidName,
+  isValidEmail,
+  isValidPhone,
+  isValidPassword,
+  isValidPinCode,
+  isValidTitle,
+  isValidObjectId,
+} = validation;
 
 const createUser = async function (req, res) {
+  try {
+    let userDetails = req.body;
+    let { title, name, phone, email, password } = userDetails;
 
-    try{
-    let userDetails = req.body 
-      //<------Checking Whether Request Body is empty or not----------->//
-    if(!Object.keys(userDetails).length > 1 ){
-        return res.status(400).send({status : false, msg : "All fields are mandatory."})
+    //<------Checking Whether Request Body is empty or not----------->//
+    if (Object.keys(userDetails).length == 0) {
+      return res
+        .status(400)
+        .send({ status: false, msg: "All fields are mandatory." });
     }
-    //<-------Creation Creation----------->//
+
+      let { street, city, pincode } = userDetails.address;
+    if(!isEmpty(title)) {
+        return res.status(400).send({ status: false, msg: "Title should be present"});
+    }
+    if(!isEmpty(name)) {
+        return res.status(400).send({ status: false, msg: "Name should be present"});
+    }
+    if(!isEmpty(phone)) {
+        return res.status(400).send({ status: false, msg: "Phone no. should be present"});
+    }
+    if(!isEmpty(email)) {
+        return res.status(400).send({ status: false, msg: "Email should be present"});
+    }
+    if(!isEmpty(password)) {
+        return res.status(400).send({ status: false, msg: "Password should be present"});
+    }
+    if(!userDetails.address) {
+        return res.status(400).send({ status: false, msg: "Address should contain street, city and pincode"})
+    }
+    if(!isEmpty(street)) {
+        return res.status(400).send({ status: false, msg: "street should be present"});
+    }
+    if(!isEmpty(city)) {
+        return res.status(400).send({ status: false, msg: "city should be present"});
+    }
+    if(!isEmpty(pincode)) {
+        return res.status(400).send({ status: false, msg: "pincode should pe present"});
+    }
+    if(!isValidTitle(title)) {
+        return res.status(400).send({ status: false, msg: "title should contain Mr, Mrs or Miss"});
+    }
+    if(!isValidName(name)) {
+        return res.status(400).send({ status: false, msg: "Name should contain alphabet only"});
+    }
+    if(!isValidPhone(phone)) {
+        return res.status(400).send({ status: false, msg: "Phone no should contains 10 digits only"});
+    }
+    if(!isValidPassword(password)) {
+        return res.status(400).send({ status: false, msg: "Password should contain one upperCase, lowerCase, special characters and Numbers"});
+    }
+    if(!isValidPinCode(pincode)) {
+        return res.status(400).send({ status: false, msg: "Pincode must contain 6 digits only"})
+    }
+    let emailCheck = await userModel.findOne({ email: email}) 
+    if(emailCheck) {
+        return res.status(400).send({ status:false, msg: "Email id is already exist"})
+    }   
+    if(!isValidEmail(email)) {
+        return res.status(400).send({ status: false, msg: "Email should be in correct format"});
+    }
+    let phoneCheck = await userModel.findOne({ phone: phone}) 
+    if(phoneCheck) {
+        return res.status(400).send({ status: false, msg: "Phone no. is already exist"});
+    }
     
-   let userCreated = await userModel.create(userDetails)
-   res.status(201).send({ status : true , data: userCreated })
-  
-   } catch (err) {
-       return res.status(500).send({ msg: err.message })
-   }
-}
+    //<-------Creation Creation----------->//
 
-
-
-
+    let userCreated = await userModel.create(userDetails);
+    res.status(201).send({ status: true, data: userCreated });
+  } catch (err) {
+    return res.status(500).send({ msg: err.message });
+  }
+};
 
 //////////////////////login api ////////////////////////
 
 const userLogin = async function (req, res) {
+  try {
+    const data = req.body;
+    const { email, password } = data;
+    let getUsersData = await userModel.findOne({ email, password });
+    
+    let token = jwt.sign(
+      {
+        userId: getUsersData._id.toString(),
+        iat: Math.floor(Date.now() / 1000), //issue date
+        exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, //expires in 24 hr
+      },
+      "group-39"
+    );
+    //   {iat, exp, userId} = data.token
+    res.setHeader("x-api-key", token);
+    res
+      .status(200)
+      .send({
+        status: true,
+        message: "Author Login Succesful",
+        data: { token },
+      });
+    // console.log(token , data._id, data.token.iat, data.token.exp);
+  } catch (err) {
+    res.status(500).send({ status: false, message: err.message });
+  }
+};
 
-    try {
-        const data = req.body;
-      const { email, password, userId } = data;
-      let user = await userModel.findOne({ email, password})
-      let token = jwt.sign(
-        { 
-            userId: user._id.toString(), iat: Math.floor(Date.now() / 1000),
-      exp: Math.floor(Date.now() / 1000) + (30 * 60)
-
-        },
-      "group-39",
-);
-
-      res.header("x-api-key", token);
-    res.status(200).send({ status: true, token: token, userId: userId });
-    }
-
-    catch(err) {
-        res.status(500).send({ status: false, message: err.message })
-
-    }
-}
-
-
-
-module.exports.createUser = createUser
-module.exports.userLogin = userLogin
+module.exports.createUser = createUser;
+module.exports.userLogin = userLogin;

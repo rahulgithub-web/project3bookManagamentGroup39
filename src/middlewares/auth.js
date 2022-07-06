@@ -23,9 +23,9 @@ const authorise = async function (req, res, next) {
       token = req.headers['x-api-key'];
       let bookId = req.params.bookId;
       let decodedToken = jwt.verify(token, 'group-39');
-      let userId = decodedToken.userId;
-      let findBook = await bookModel.findOne({ userId: userId, _id: bookId });
-      if (!findBook)
+      let loggedInUser = decodedToken.userId;
+      let bookData = await bookModel.findById({ userId: loggedInUser, _id: bookId });
+      if (!bookData)
         return res.status(403).send({status: false, msg: 'YOU ARE NOT AUTHORIZED',
         });
       next();
