@@ -5,7 +5,7 @@ const createUser = async function (req, res) {
     try{
     let userDetails = req.body 
       //<------Checking Whether Request Body is empty or not----------->//
-    if(!userDetails ){
+    if(Object.keys(userDetails).length ==0){
         return res.status(400).send({status : false, msg : "All fields are mandatory."})
     }
     //<-------Creation Creation----------->//
