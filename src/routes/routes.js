@@ -8,7 +8,7 @@ const middlewares = require("../middlewares/auth")
 
 let { createUser, userLogin } = userController;
 let { createBook } = bookController;
-let {authenticate, authorise} = middlewares;
+let { authenticate, authorise } = middlewares;
 
 // ==========> Create User Api <=============   
 router.post("/register", createUser);
