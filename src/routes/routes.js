@@ -1,10 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const {createUser,loginUser} = require("../controllers/userController")
-// const {authentication,authorization} = require("../middlewares/auth");
 
- // User routes
-router.post('/register', createUser);
-// router.post('/login', loginUser);
+// const bookController = require("../controllers/bookController")
+const userController = require("../controllers/userController")
 
-module.exports =  router;
+router.post("/register", userController.createUser)
+
+router.post("/login", userController.userLogin)
+
+
+router.all('/*', async function(req, res){
+    res.status(404).send({status: false, msg: "Page Not Found!!!"})
+})
+
+
+module.exports = router;
