@@ -4,6 +4,9 @@ const jwt = require('jsonwebtoken');
 const userModel = require("../models/userModel");
 
 
+const userModel = require('../models/userModel')
+
+
 const createUser = async function (req, res) {
 
     try{
@@ -21,6 +24,7 @@ const createUser = async function (req, res) {
        return res.status(500).send({ msg: err.message })
    }
 }
+
 
 
 
@@ -56,3 +60,4 @@ const userLogin = async function (req, res) {
 
 module.exports.createUser = createUser
 module.exports.userLogin = userLogin
+
