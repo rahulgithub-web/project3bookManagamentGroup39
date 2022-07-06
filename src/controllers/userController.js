@@ -24,7 +24,6 @@ const createUser = async function (req, res) {
         .status(400)
         .send({ status: false, msg: "All fields are mandatory." });
     }
-
       let { street, city, pincode } = userDetails.address;
     if(!isEmpty(title)) {
         return res.status(400).send({ status: false, msg: "Title should be present"});
@@ -80,7 +79,7 @@ const createUser = async function (req, res) {
         return res.status(400).send({ status: false, msg: "Phone no. is already exist"});
     }
     
-    //<-------Creation Creation----------->//
+    //<-------User Creation----------->//
 
     let userCreated = await userModel.create(userDetails);
     res.status(201).send({ status: true, data: userCreated });
@@ -89,7 +88,7 @@ const createUser = async function (req, res) {
   }
 };
 
-//////////////////////login api ////////////////////////
+// ==========> login api <=============
 
 const userLogin = async function (req, res) {
   try {
@@ -100,7 +99,22 @@ const userLogin = async function (req, res) {
           .status(400)
           .send({ status: false, msg: "All fields are mandatory." });
       }
+    if(!isEmpty(email)) {
+        return res.status(400).send({status: false, msg: "Email should be present"});
+    } 
+    if(!isEmpty(password)) {
+        return res.status(400).send({ status: false, msg: "Password should be present"});
+    } 
+    if(!isValidEmail(email)) {
+        return res.status(400).send({ status: false, msg: "Email should be in correct format"});
+    }
+    if(!isValidPassword(password)) {
+        return res.status(400).send({ status: false, msg: "assword should contain one upperCase, lowerCase, special characters and Numbers"});
+    }
     let getUsersData = await userModel.findOne({ email:email, password:password });
+    if(!getUsersData) {
+        return res.status(401).send({ status: false, msg: "Input a valid Email or Password"});
+    }
     let token = jwt.sign(
       {
         userId: getUsersData._id.toString(),
