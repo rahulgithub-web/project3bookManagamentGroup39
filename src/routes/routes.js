@@ -7,7 +7,7 @@ const middlewares = require("../middlewares/auth")
 
 
 let { createUser, userLogin } = userController;
-let { createBook, getBooks } = bookController;
+let { createBook, getBooks,deleteBook } = bookController;
 let { authenticate, authorise } = middlewares;
 
 // ==========> Create User Api <=============   
@@ -20,6 +20,9 @@ router.post("/login", userLogin);
 router.post("/books", authenticate ,createBook);
 
 router.get("/books", authenticate ,getBooks);
+
+// ===========> Delete Books Api <=============
+router.delete("/books/:bookId", authenticate ,deleteBook);
 
 
 

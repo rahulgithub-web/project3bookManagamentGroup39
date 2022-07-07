@@ -19,6 +19,15 @@ const createUser = async function (req, res) {
     let userDetails = req.body;
     let { title, name, phone, email, password } = userDetails;
 
+
+      //<------Checking Whether Request Body is empty or not----------->//
+
+    // if(Object.keys(userDetails).length ==0){
+
+    // // if(!Object.keys(userDetails).length > 1 ){
+
+    //     return res.status(400).send({status : false, msg : "All fields are mandatory."})
+    // }
     //<------Checking Whether Request Body is empty or not----------->//
     if (Object.keys(userDetails).length == 0) {
       return res
@@ -80,6 +89,7 @@ const createUser = async function (req, res) {
     let phoneCheck = await userModel.findOne({ phone: phone}); 
     if(phoneCheck) {
         return res.status(400).send({ status: false, msg: "Phone no. is already exist"});
+
     }
     
     //<-------User Creation----------->//
