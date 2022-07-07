@@ -1,7 +1,6 @@
 const bookModel = require("../models/bookModel");
 const userModel = require("../models/userModel");
 const validation = require("../validator/validator");
-const mongoose = require("mongoose");
 const reviewModel = require("../models/reviewModel");
 
 let { isEmpty, isValidObjectId, isValidISBN, isValidExcerpt } = validation;
@@ -194,4 +193,4 @@ const deleteBook = async function (req, res) {
 module.exports.createBook = createBook;
 module.exports.getBooks = getBooks;
 module.exports.deleteBook = deleteBook;
-module.exports.getBooksById = getBooksById;g
+module.exports.getBooksById = getBooksById;
