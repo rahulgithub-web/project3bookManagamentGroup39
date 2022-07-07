@@ -12,6 +12,8 @@ let {
   isValidTitle,
 } = validation;
 
+
+// ==================> Create User Api <============= 
 const createUser = async function (req, res) {
   try {
     let userDetails = req.body;
@@ -133,7 +135,7 @@ const userLogin = async function (req, res) {
         message: "Author Login Succesful",
         data: { token },
       });
-    // console.log(token, iat);
+    console.log(token);
   } catch (err) {
     res.status(500).send({ status: false, message: err.message });
   }
