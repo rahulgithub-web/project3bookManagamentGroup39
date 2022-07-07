@@ -128,6 +128,21 @@ const getBooks = async function (req, res) {
   }
 };
 
+// ============> Get Books By Id <=============
+const getBooksById = async function(req,res) {
+try {
+    const bookId = req.params.bookId;
+
+    const checkBook = await bookModel.findOne({_id: bookId, isDeleted: false});
+    if(!checkBook) {
+        return res.status(404).send({ status: false, message: "BookId should be present"})
+    }
+
+} catch(err) {
+    return res.status(500).send({ status: false, err: err.message})
+}
+}
+
 // =================> Delete Books by Id <================
 const deleteBook = async function (req, res) {
   try {
@@ -148,9 +163,9 @@ const deleteBook = async function (req, res) {
       { new: true }
     );
     if (!book)
-      return res.status(404).send({ status: false, msg: "No Blog Found !!!" });
+      return res.status(404).send({ status: false, msg: "No Books Found !!!" });
 
-    res.status(200).send({ status: true, data: book });
+    res.status(200).send({ status: true,msg: "Books data has been deleted successfully",data: book });
   } catch (error) {
     return res.status(500).send({ status: false, msg: error.message });
   }
