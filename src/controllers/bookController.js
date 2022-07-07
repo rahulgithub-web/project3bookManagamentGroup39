@@ -194,6 +194,4 @@ const deleteBook = async function (req, res) {
 module.exports.createBook = createBook;
 module.exports.getBooks = getBooks;
 module.exports.deleteBook = deleteBook;
-module.exports.getBooksById = getBooksById;
-
-// let name = getDetails.name; let fullName = getDetails.fullName; let logoLink = getDetails.logoLink; let collegeData ={ name:name, fullName:fullName, logoLink:logoLink, intern:internDetails } 
+module.exports.getBooksById = getBooksById;g
