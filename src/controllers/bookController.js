@@ -136,7 +136,7 @@ const getBooksById = async function (req, res) {
     const checkBook = await bookModel.findOne({
       _id: bookId,
       isDeleted: false,
-    });
+    }).select({__v:0, ISBN: 0});
     if (!checkBook) {
       return res
         .status(404)
@@ -146,12 +146,12 @@ const getBooksById = async function (req, res) {
       bookId: bookId,
       isDeleted: false,
     });
-    checkBook["reviewsData"] = checkReview;
-    // checkBook.reviewsData = checkReview;
+
+    checkBook._doc.reviewsData = checkReview;
 
     return res
       .status(200)
-      .send({ status: true, message: "BooksList", data: { checkBook, checkReview} });
+      .send({ status: true, message: "BooksList", data: checkBook });
   } catch (err) {
     return res.status(500).send({ status: false, err: err.message });
   }
