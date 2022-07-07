@@ -10,6 +10,8 @@ router.post("/login", userController.userLogin)
 
 router.post("/books", bookController.createBook)
 
+router.get("/books",bookController.getBooks)
+
 
 router.all('/*', async function(req, res){
     res.status(404).send({status: false, msg: "Page Not Found!!!"})

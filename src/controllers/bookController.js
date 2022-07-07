@@ -1,3 +1,4 @@
+const { find } = require("../models/bookModel");
 const bookModel = require("../models/bookModel");
 const userModel = require("../models/userModel");
 const validation = require("../validator/validator");
@@ -62,4 +63,26 @@ const createBook = async function (req, res) {
 }
 
 
-module.exports.createBook = createBook;
+// get api
+// const updateBook= async function(req , res){
+//     try{
+//         let id = req.params.bookId;
+//         let data = req.body;
+//         let book = await bookModel.findOne({ _id: id, isDeleted: false });
+
+//         if (Object.keys(blog).length == 0) {
+//             return res.status(404).send('No such Book found');
+//           }
+   
+//         let update = await bookModel.findOneAndUpdate({$set: title, excerpt,releaseddate,ISBN})
+//         return res.status(400).send('')
+//     }
+//     catch{
+//       return req.status(500).send({status:false, msg:err.message})
+
+//     }
+    
+// }
+module.exports.createBook = createBook
+
+// module.exports.updateBook = updateBook
