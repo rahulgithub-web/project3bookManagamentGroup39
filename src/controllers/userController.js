@@ -10,21 +10,31 @@ let {
   isValidPassword,
   isValidPinCode,
   isValidTitle,
-  isValidObjectId,
 } = validation;
 
+
+// ==================> Create User Api <============= 
 const createUser = async function (req, res) {
   try {
     let userDetails = req.body;
     let { title, name, phone, email, password } = userDetails;
 
+
+      //<------Checking Whether Request Body is empty or not----------->//
+
+    // if(Object.keys(userDetails).length ==0){
+
+    // // if(!Object.keys(userDetails).length > 1 ){
+
+    //     return res.status(400).send({status : false, msg : "All fields are mandatory."})
+    // }
     //<------Checking Whether Request Body is empty or not----------->//
     if (Object.keys(userDetails).length == 0) {
       return res
         .status(400)
         .send({ status: false, msg: "All fields are mandatory." });
     }
-      let { street, city, pincode } = userDetails.address;
+    let { street, city, pincode } = userDetails.address;
     if(!isEmpty(title)) {
         return res.status(400).send({ status: false, msg: "Title should be present"});
     }
@@ -41,7 +51,7 @@ const createUser = async function (req, res) {
         return res.status(400).send({ status: false, msg: "Password should be present"});
     }
     if(!userDetails.address) {
-        return res.status(400).send({ status: false, msg: "Address should contain street, city and pincode"})
+        return res.status(400).send({ status: false, msg: "Address should contain street, city and pincode"});
     }
     if(!isEmpty(street)) {
         return res.status(400).send({ status: false, msg: "street should be present"});
@@ -58,6 +68,7 @@ const createUser = async function (req, res) {
     if(!isValidName(name)) {
         return res.status(400).send({ status: false, msg: "Name should contain alphabet only"});
     }
+    name = name.toLowerCase();
     if(!isValidPhone(phone)) {
         return res.status(400).send({ status: false, msg: "Phone no should contains 10 digits only"});
     }
@@ -65,24 +76,26 @@ const createUser = async function (req, res) {
         return res.status(400).send({ status: false, msg: "Password should contain one upperCase, lowerCase, special characters and Numbers"});
     }
     if(!isValidPinCode(pincode)) {
-        return res.status(400).send({ status: false, msg: "Pincode must contain 6 digits only"})
+        return res.status(400).send({ status: false, msg: "Pincode must contain 6 digits only"});
     }
-    let emailCheck = await userModel.findOne({ email: email}) 
+    let emailCheck = await userModel.findOne({ email: email}); 
     if(emailCheck) {
-        return res.status(400).send({ status:false, msg: "Email id is already exist"})
+        return res.status(400).send({ status:false, msg: "Email id is already exist"});
     }   
     if(!isValidEmail(email)) {
         return res.status(400).send({ status: false, msg: "Email should be in correct format"});
     }
-    let phoneCheck = await userModel.findOne({ phone: phone}) 
+    email = email.toLowerCase();
+    let phoneCheck = await userModel.findOne({ phone: phone}); 
     if(phoneCheck) {
         return res.status(400).send({ status: false, msg: "Phone no. is already exist"});
+
     }
     
     //<-------User Creation----------->//
 
     let userCreated = await userModel.create(userDetails);
-    res.status(201).send({ status: true, data: userCreated });
+    res.status(201).send({ status: true,msg: "User Model has been successfully created" ,data: userCreated });
   } catch (err) {
     return res.status(500).send({status: false, msg: err.message });
   }
@@ -133,7 +146,7 @@ const userLogin = async function (req, res) {
         message: "Author Login Succesful",
         data: { token },
       });
-    // console.log(token, iat);
+    console.log(token);
   } catch (err) {
     res.status(500).send({ status: false, message: err.message });
   }

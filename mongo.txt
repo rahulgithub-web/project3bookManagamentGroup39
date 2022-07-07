@@ -1,3 +1,7 @@
 bookManagemnt
 pass - QqtAVRV2r76yCnD2 
 mongodb+srv://bookManagemnt:<password>@cluster0.4vjcpm9.mongodb.net/test
+
+releasedAt:moment(releasedAt).toISOString() 
+
+require moment karake and then use releasedAt: { type: moment(new Date()).format("YYYY-MM-DD"), required: true, default: null 
