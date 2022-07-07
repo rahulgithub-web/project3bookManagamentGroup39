@@ -1,9 +1,8 @@
-const { find } = require("../models/bookModel");
 const bookModel = require("../models/bookModel");
 const userModel = require("../models/userModel");
 const validation = require("../validator/validator");
 const mongoose = require("mongoose");
-const ObjectId = mongoose.Types.ObjectId;
+const reviewModel = require("../models/reviewModel");
 
 let { isEmpty, isValidObjectId, isValidISBN, isValidExcerpt } = validation;
 
@@ -130,19 +129,33 @@ const getBooks = async function (req, res) {
 };
 
 // ============> Get Books By Id <=============
-const getBooksById = async function(req,res) {
-try {
+const getBooksById = async function (req, res) {
+  try {
     const bookId = req.params.bookId;
 
-    const checkBook = await bookModel.findOne({_id: bookId, isDeleted: false});
-    if(!checkBook) {
-        return res.status(404).send({ status: false, message: "BookId should be present"})
+    const checkBook = await bookModel.findOne({
+      _id: bookId,
+      isDeleted: false,
+    });
+    if (!checkBook) {
+      return res
+        .status(404)
+        .send({ status: false, message: "Invalid BookId" });
     }
+    const checkReview = await reviewModel.find({
+      bookId: bookId,
+      isDeleted: false,
+    });
+    checkBook["reviewsData"] = checkReview;
+    // checkBook.reviewsData = checkReview;
 
-} catch(err) {
-    return res.status(500).send({ status: false, err: err.message})
-}
-}
+    return res
+      .status(200)
+      .send({ status: true, message: "BooksList", data: { checkBook, checkReview} });
+  } catch (err) {
+    return res.status(500).send({ status: false, err: err.message });
+  }
+};
 
 // =================> Delete Books by Id <================
 const deleteBook = async function (req, res) {
@@ -166,7 +179,13 @@ const deleteBook = async function (req, res) {
     if (!book)
       return res.status(404).send({ status: false, msg: "No Books Found !!!" });
 
-    res.status(200).send({ status: true,msg: "Books data has been deleted successfully",data: book });
+    res
+      .status(200)
+      .send({
+        status: true,
+        msg: "Books data has been deleted successfully",
+        data: book,
+      });
   } catch (error) {
     return res.status(500).send({ status: false, msg: error.message });
   }
@@ -175,3 +194,6 @@ const deleteBook = async function (req, res) {
 module.exports.createBook = createBook;
 module.exports.getBooks = getBooks;
 module.exports.deleteBook = deleteBook;
+module.exports.getBooksById = getBooksById;
+
+// let name = getDetails.name; let fullName = getDetails.fullName; let logoLink = getDetails.logoLink; let collegeData ={ name:name, fullName:fullName, logoLink:logoLink, intern:internDetails } 
