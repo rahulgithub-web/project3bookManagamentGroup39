@@ -5,6 +5,8 @@ const bookController = require("../controllers/bookController");
 const userController = require("../controllers/userController");
 const middlewares = require("../middlewares/auth")
 
+router.get("/books",bookController.getBooks)
+
 
 let { createUser, userLogin } = userController;
 let { createBook, getBooks,deleteBook } = bookController;

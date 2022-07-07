@@ -122,7 +122,7 @@ const userLogin = async function (req, res) {
         return res.status(400).send({ status: false, msg: "Email should be in correct format"});
     }
     if(!isValidPassword(password)) {
-        return res.status(400).send({ status: false, msg: "assword should contain one upperCase, lowerCase, special characters and Numbers"});
+        return res.status(400).send({ status: false, msg: "password should contain one upperCase, lowerCase, special characters and Numbers"});
     }
     let getUsersData = await userModel.findOne({ email:email, password:password });
     if(!getUsersData) {
@@ -136,6 +136,7 @@ const userLogin = async function (req, res) {
       },
       "group-39"
     );
+    console.log(token);
     //   data.token = { exp, userId, expiresIn};
     res.setHeader("x-api-key", token);
     res
