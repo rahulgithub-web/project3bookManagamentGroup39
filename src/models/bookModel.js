@@ -40,7 +40,7 @@ const bookModel = new mongoose.Schema({
         type : Number,
         trim: true,
         default: 0,
-        comment: "Holds number of reviews of this book"
+       
     },
     deletedAt:{
         type : Date,

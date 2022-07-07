@@ -1,6 +1,8 @@
 const bookModel = require("../models/bookModel");
 const userModel = require("../models/userModel");
 const validation = require("../validator/validator");
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 let {isEmpty,
     isValidObjectId,
@@ -63,3 +65,31 @@ const createBook = async function (req, res) {
 
 
 module.exports.createBook = createBook;
+// ------------------------------delete Book by Id------------------------------------------->
+const deleteBook = async function(req,res){
+try {
+    let bookId = req.params.bookId;
+    let obj = {};
+    if (req.params.bookId) {
+                if (!bookId) return res.status(404).send({ status: false, msg: "Invalid BookId !!" });
+                else obj.bookId = req.params.bookId;
+              }
+              const dataObj = { isDeleted: true};
+  
+              let book = await bookModel.findOneAndUpdate(
+                         { _id: obj.bookId, isDeleted: false },
+                         { $set:dataObj },
+                         { new: true }
+                       );
+                       if (!book) return res.status(404).send({ status: false, msg: "No Blog Found !!!" });
+                  
+                       res.status(200).send({status: true,data:book});
+                  
+} catch (error) {
+    return res.status(500).send({ status: false, msg: error.message });
+}
+}
+
+ 
+ module.exports.deleteBook = deleteBook;
+
