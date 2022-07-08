@@ -185,7 +185,7 @@ const updateBook = async function (req, res) {
     if (!checkBook)
       return res.status(404).send({ status: false, message: "No Book Found" });
     if(checkBook.isDeleted == true) {
-      return res.status(404).send({ status: false, message: "Book has already been declared"})
+      return res.status(404).send({ status: false, message: "Book has already been deleted"})
     };
     if (Object.keys(data).length == 0) {
       return res
