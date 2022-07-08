@@ -184,7 +184,9 @@ const updateBook = async function (req, res) {
     );
     if (!checkBook)
       return res.status(404).send({ status: false, message: "No Book Found" });
-
+    if(checkBook.isDeleted == true) {
+      return res.status(404).send({ status: false, message: "Book has already been deleted"})
+    };
     if (Object.keys(data).length == 0) {
       return res
         .status(400)
@@ -262,18 +264,18 @@ const deleteBook = async function (req, res) {
     }
     const dataObj = { isDeleted: true };
 
-    let book = await bookModel.findOneAndUpdate(
+    let checkBook = await bookModel.findOneAndUpdate(
       { _id: obj.bookId, isDeleted: false },
       { $set: dataObj },
       { new: true }
     );
-    if (!book)
-      return res.status(404).send({ status: false, msg: "No Books Found !!!" });
+    if (!checkBook)
+      return res.status(404).send({ status: false, msg: "No Books Found" });
 
     res.status(200).send({
       status: true,
       msg: "Books data has been deleted successfully",
-      data: book,
+      data: checkBook,
     });
   } catch (error) {
     return res.status(500).send({ status: false, msg: error.message });
