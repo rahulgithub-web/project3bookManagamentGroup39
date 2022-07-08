@@ -3,7 +3,8 @@ const userModel = require("../models/userModel");
 const validation = require("../validator/validator");
 const reviewModel = require("../models/reviewModel");
 
-let { isEmpty, isValidObjectId, isValidISBN, isValidExcerpt, isValidName } = validation;
+let { isEmpty, isValidObjectId, isValidISBN, isValidExcerpt, isValidName } =
+  validation;
 
 // ===========> Create Book Api <==============
 const createBook = async function (req, res) {
@@ -195,8 +196,11 @@ const updateBook = async function (req, res) {
         .status(400)
         .send({ status: false, message: "title should be present" });
     }
-    if(!isValidName(title)) {
-      return res.status(400).send({ status: false, message: "title should contain alphabets only"});
+    if (!isValidName(title)) {
+      return res.status(400).send({
+        status: false,
+        message: "title should contain alphabets only",
+      });
     }
     if (!isEmpty(excerpt)) {
       return res
@@ -252,7 +256,7 @@ const deleteBook = async function (req, res) {
       if (!bookId)
         return res
           .status(404)
-          .send({ status: false, msg: "Invalid BookId !!" });
+          .send({ status: false, msg: "Please provide valid bookId" });
       else obj.bookId = req.params.bookId;
     }
     const dataObj = { isDeleted: true };

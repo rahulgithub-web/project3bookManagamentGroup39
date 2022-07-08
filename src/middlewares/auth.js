@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bookModel = require("../models/bookModel");
-const User = require('../models/userModel');
 let decodedToken;
+let {isValidObjectId} = require("../validator/validator");
 
 // AUTHENTICATION
 const authenticate = function (req, res, next) {
@@ -121,6 +121,12 @@ let userId = req.query.userId
         {
           if(!validuserId)
             return res.status(400).send({status : false, msg : "Invalid Blog Id !!"});
+            if (!isValidObjectId(bookId)) {
+              return res.status(404).send({
+                status: false,
+                message: "Invalid BookId",
+              });
+            }
           else idCheckObj.bookId = req.params.bookId;
         }
   // console.log(validuserId)
