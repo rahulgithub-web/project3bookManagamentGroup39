@@ -135,6 +135,12 @@ const getBooksById = async function (req, res) {
   try {
     const bookId = req.params.bookId;
 
+    if (!isValidObjectId(bookId)) {
+      return res.status(404).send({
+        status: false,
+        message: "Invalid BookId",
+      });
+    }
     const checkBook = await bookModel
       .findOne({
         _id: bookId,
@@ -142,7 +148,7 @@ const getBooksById = async function (req, res) {
       })
       .select({ __v: 0, ISBN: 0 });
     if (!checkBook) {
-      return res.status(404).send({ status: false, message: "Invalid BookId" });
+      return res.status(404).send({ status: false, message: "No Book Found" });
     }
     const checkReview = await reviewModel.find({
       bookId: bookId,
@@ -201,11 +207,6 @@ const updateBook = async function (req, res) {
         status: false,
         message: "title should contain alphabets only",
       });
-    }
-    if (!isEmpty(excerpt)) {
-      return res
-        .status(400)
-        .send({ status: false, message: "excerpt should be present" });
     }
     if (!isValidExcerpt(excerpt)) {
       return res.status(400).send({
