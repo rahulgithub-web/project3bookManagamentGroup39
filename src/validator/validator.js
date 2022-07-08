@@ -52,13 +52,13 @@ const isValidObjectId = (objectId) => {
 
 // ISBN validation   
 const isValidISBN = (ISBN) => {
-    const ISBNregex = /^[0-9 ]{13}$/; 
+    const ISBNregex = /^[0-9 ]{10,13}$/; 
     return ISBNregex.test(ISBN);
 }
 
 // excerpt Validation  
 const isValidExcerpt = (excerpt) => {
-    const excerptRegex = /^[A-Za-z,]+$/;
+    const excerptRegex = /^[A-Za-z ,]+$/;
     return excerptRegex.test(excerpt);
 }
 

@@ -26,7 +26,7 @@ router.get("/books", authenticate, getBooks);
 router.get("/books/:bookId", authenticate, getBooksById);
 
 // ===========> Update Books Api <=============
-router.put("/books/:bookId", authenticate, updateBook);
+router.put("/books/:bookId", authenticate,authorise, updateBook);
 
 // ===========> Delete Books Api <=============
 router.delete("/books/:bookId", authenticate, authorise, deleteBook);
