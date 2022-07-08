@@ -58,7 +58,7 @@ const isValidISBN = (ISBN) => {
 
 // excerpt Validation  
 const isValidExcerpt = (excerpt) => {
-    const excerptRegex = /^[A-Za-z,]+$/;
+    const excerptRegex = /^[A-Za-z ,]+$/;
     return excerptRegex.test(excerpt);
 }
 

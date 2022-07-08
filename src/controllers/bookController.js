@@ -208,11 +208,6 @@ const updateBook = async function (req, res) {
         message: "title should contain alphabets only",
       });
     }
-    if (!isEmpty(excerpt)) {
-      return res
-        .status(400)
-        .send({ status: false, message: "excerpt should be present" });
-    }
     if (!isValidExcerpt(excerpt)) {
       return res.status(400).send({
         status: false,
