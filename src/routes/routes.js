@@ -20,10 +20,10 @@ router.post("/login", userLogin);
 router.post("/books", authenticate, createBook);
 
 // =============> Get Books Api <============
-router.get("/books", authenticate, getBooks);
+router.get("/books", authenticate,authorise,getBooks);
 
 // =============> Get Books By Id <============
-router.get("/books/:bookId", authenticate, getBooksById);
+router.get("/books/:bookId", authenticate,authorise, getBooksById);
 
 // ===========> Update Books Api <=============
 router.put("/books/:bookId", authenticate,authorise, updateBook);

@@ -123,6 +123,7 @@ const userLogin = async function (req, res) {
         userId: getUsersData._id.toString(),
         iat: Math.floor(Date.now() / 1000), //issue date
         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, //expires in 24 hr
+        
       },
       "group-39"
     );
@@ -133,7 +134,7 @@ const userLogin = async function (req, res) {
       .status(200)
       .send({
         status: true,
-        message: "Author Login Succesful",
+        message: "User Login Succesful",
         data: { token },
       });
     console.log(token);
