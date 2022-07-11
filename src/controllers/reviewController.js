@@ -103,7 +103,7 @@ const updateReview = async (req, res) => {
       return res.status(400).send({ status: false, message: "All fields are menditory"});
     }
 
-    let checkBook = await bookModel.findOne({ bookId: bookId, isDeleted: false});
+    let checkBook = await bookModel.findOne({ bookId: bookId, isDeleted: false}).Seleect({__v:0});
     if(!checkBook) {
       return res.status(404).send({ status: false, message: "Provide a valid bookId"})
     }
@@ -127,13 +127,13 @@ const updateReview = async (req, res) => {
       { new: true }
     );
 
-    const updateBook = await bookModel.find({
-      bookId: bookId,
-      isDeleted: false,
-    }).select({__v:0, createdAt: 0, updatedAt: 0, isDeleted: 0});
+//     const updateBook = await bookModel.find({
+//       bookId: bookId,
+//       isDeleted: false,
+//     }).select({__v:0, createdAt: 0, updatedAt: 0, isDeleted: 0});
 
-    let {...updatedBook} = updatedReview;
-    updatedBook._doc.reviewesData = updateBook;
+    let {...updatedBook} = checkBook;
+    updatedBook._doc.reviewesData = updatedReview;
     res.status(200).send({
       status: true,
       message: "Successfully updated Review Details",
