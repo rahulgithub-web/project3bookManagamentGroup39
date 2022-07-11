@@ -193,5 +193,5 @@ const deleteBook = async function (req, res) {
 
 module.exports.createBook = createBook;
 module.exports.getBooks = getBooks;
-module.exports.deleteBook = deleteBook;
 module.exports.getBooksById = getBooksById;
+module.exports.deleteBook = deleteBook;
