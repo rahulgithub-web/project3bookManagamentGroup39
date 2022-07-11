@@ -112,13 +112,15 @@ let userId = req.query.userId
           let id = req.body.userId;
           if (!id)
             return res.status(400).send({ status: false, msg: "Enter valid user Id." });
-          if (decodedToken.userId == req.body.Id) return next();
+          if (decodedToken.userId == id) 
+          return next();
           else return res.status(401).send({ status: false, msg: "Unauthorised!!!" });
         }
 
 
         //<------This is for Path Parameter------>//
         let validuserId = req.params.bookId;
+        console.log("this is from path",validuserId);
         req.tokenId = decodedToken.userId;
         let validuser = decodedToken.userId;
         let idCheckObj = {};
@@ -140,7 +142,7 @@ let userId = req.query.userId
   
         //<------Checking Book is Exist or Not------->//
         let userId = await bookModel.findById(idCheckObj.bookId).select({ userId: 1, _id: 0});
-
+         console.log("login user",userId)
         if (!userId) return res.status(400).send({ status: false, msg: "Book Does not Exist with this book Id!!!" });
         userId = userId.userId.toString();
         if (validAuthor != userId) return res.status(401).send({ status: false, msg: "User not Authorised !!!" });

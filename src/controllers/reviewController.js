@@ -15,6 +15,7 @@ const createReview = async function (req, res) {
         .status(404)
         .send({ status: false, message: "Enter a valid book id" });
     }
+
     let checkBook = await bookModel.findOne(
       { _id: bookId },
       { isDeleted: false }
@@ -24,6 +25,11 @@ const createReview = async function (req, res) {
         .status(400)
         .send({ status: false, message: "Book is not available" });
     let data = req.body;
+    if (Object.keys(data).length == 0) {
+        return res
+          .status(400)
+          .send({ status: false, msg: "All fields are mandatory!" });
+      }
     let { rating, reviewedBy, review } = data;
     if (!rating) {
       return res
