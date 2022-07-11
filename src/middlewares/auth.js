@@ -49,7 +49,7 @@ const authorise = async (req, res, next) => {
   //<-------Passing LoggedIn UserId into Route Handler------>//
   let validAuthor = decodedToken.userId;
   req.userId = validAuthor;
-
+ 
   //<---------------------This is for Query Paramrter----------------->//
   if (Object.keys(req.query)!=0) {
     try {
@@ -63,9 +63,15 @@ let userId = req.query.userId
       let finduserIdObj = {isDeleted : false};
       if(userId)
       {
+        if (!isValidObjectId(userId)) {
+          return res.status(404).send({
+            status: false,
+            message: "Invalid userId",
+          });
+        }
         if( req.query.userId == validAuthor)
           finduserIdObj.userId = req.query.userId;
-        else if(!userId) return res.status(400).send({status : false, msg : "Invalid Author ID !!! "})
+        else if(!userId) return res.status(400).send({status : false, msg : "Invalid user ID !!! "})
             else return res.status(401).send({status : false, msg : "Unauthorised!!!"})
       }
 
@@ -77,10 +83,13 @@ let userId = req.query.userId
         finduserIdObj.subcategory = req.query.subcategory;
       let fetchuserId = await bookModel.findOne(finduserIdObj).select({userId : 1, _id  : 0})
       
+      //if(fetchuserId != validAuthor){ return res.status(403).send({msg : "you are not authorized toaccess the data!! "})}
+    
       //<---------Checking Book Exist or not--------->//
       if(fetchuserId != null)
       {
         req.varifieduser = fetchuserId.userId;
+   
         return next();
       }
       return res.status(404).send({msg : "No Data Found !! "})
@@ -110,17 +119,15 @@ let userId = req.query.userId
 
         //<------This is for Path Parameter------>//
         let validuserId = req.params.bookId;
-        //console.log(validuserId)
         req.tokenId = decodedToken.userId;
         let validuser = decodedToken.userId;
-
         let idCheckObj = {};
 
         //<------Checking BookId is Valid or Not----->//
         if(validuserId)
         {
           if(!validuserId)
-            return res.status(400).send({status : false, msg : "Invalid Blog Id !!"});
+            return res.status(400).send({status : false, msg : "Invalid Book Id !!"});
             if (!isValidObjectId(bookId)) {
               return res.status(404).send({
                 status: false,
@@ -129,11 +136,12 @@ let userId = req.query.userId
             }
           else idCheckObj.bookId = req.params.bookId;
         }
-  // console.log(validuserId)
+       
+  
         //<------Checking Book is Exist or Not------->//
         let userId = await bookModel.findById(idCheckObj.bookId).select({ userId: 1, _id: 0});
-        // console.log(userId);
-        if (!userId) return res.status(400).send({ status: false, msg: "Book Does not Exist!!!" });
+
+        if (!userId) return res.status(400).send({ status: false, msg: "Book Does not Exist with this book Id!!!" });
         userId = userId.userId.toString();
         if (validAuthor != userId) return res.status(401).send({ status: false, msg: "User not Authorised !!!" });
 

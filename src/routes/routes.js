@@ -22,13 +22,13 @@ router.post("/login", userLogin);
 router.post("/books", authenticate, authorise ,createBook);
 
 // =============> Get Books Api <============
-router.get("/books", authenticate, getBooks);
+router.get("/books", authenticate,authorise,getBooks);
 
 // =============> Get Books By Id <============
-router.get("/books/:bookId", authenticate, getBooksById);
+router.get("/books/:bookId", authenticate,authorise, getBooksById);
 
 // ===========> Update Books Api <=============
-router.put("/books/:bookId", authenticate, updateBook);
+router.put("/books/:bookId", authenticate,authorise, updateBook);
 
 // ===========> Delete Books Api <=============
 router.delete("/books/:bookId", authenticate, authorise, deleteBook);

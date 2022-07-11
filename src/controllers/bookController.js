@@ -299,7 +299,7 @@ const deleteBook = async function (req, res) {
 
     let checkBook = await bookModel.findOneAndUpdate(
       { _id: obj.bookId, isDeleted: false },
-      { $set: dataObj },
+      { $set: dataObj, deletedAt: Date.now() },
       { new: true }
     );
     if (!checkBook)

@@ -52,7 +52,7 @@ const bookModel = new mongoose.Schema({
     releasedAt:{
         type : Date,
         trim : true,
-        default : Date.now
+      
     }
 },{timestamps:true})
 
