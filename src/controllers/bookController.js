@@ -77,9 +77,9 @@ const createBook = async function (req, res) {
         .send({ status: false, message: "ISBN already exist" });
     }
     releasedAt = Date.now().toLocaleString;
-    if(!isValidDate(releasedAt)) {
-      return res.status(400).send({ status: false, msg: "Please provide a valid date in 'YYYY-MM-DD' format" });
-    }
+    // if(!isValidDate(releasedAt)) {
+    //   return res.status(400).send({ status: false, msg: "Please provide a valid date in 'YYYY-MM-DD' format" });
+    // }
     let savedData = await bookModel.create(data);
 
     return res.status(201).send({

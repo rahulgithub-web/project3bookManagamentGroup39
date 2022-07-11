@@ -9,7 +9,7 @@ const middlewares = require("../middlewares/auth");
 let { createUser, userLogin } = userController;
 let { createBook, getBooks, getBooksById, updateBook, deleteBook } =
   bookController;
-let {createReview, updateReview, deleteReview} = reviewController;
+let {createReview, updateReview, deleteReview } = reviewController;
 let { authenticate, authorise } = middlewares;
 
 // ==========> Create User Api <=============
@@ -25,10 +25,10 @@ router.post("/books", authenticate, authorise ,createBook);
 router.get("/books", authenticate, authorise ,getBooks);
 
 // ==========> Get Books By Id <============
-router.get("/books/:bookId", authenticate,authorise, getBooksById);
+router.get("/books/:bookId", authenticate, authorise, getBooksById);
 
 // ==========> Update Books Api <=============
-router.put("/books/:bookId", authenticate,authorise, updateBook);
+router.put("/books/:bookId", authenticate, authorise, updateBook);
 
 // ==========> Delete Books Api <=============
 router.delete("/books/:bookId", authenticate, authorise, deleteBook);
@@ -36,8 +36,12 @@ router.delete("/books/:bookId", authenticate, authorise, deleteBook);
 // ==========> Create Review Api <============= 
 router.post("/books/:bookId/review", createReview);
 
+// ==========> Update Review Api <============
+router.put("/books/:bookId/reviews/:reviewId", updateReview);
+
 // ==========> Delete Review Api <============
 router.delete("/books/:bookId/reviews/:reviewId", deleteReview);
+
 
 // ==========> This API is used for handling any invalid Endpoints <=========== 
   router.all("/*", async function (req, res) {
