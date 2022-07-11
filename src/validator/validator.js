@@ -52,7 +52,7 @@ const isValidObjectId = (objectId) => {
 
 // ISBN validation   
 const isValidISBN = (ISBN) => {
-    const ISBNregex = /^[0-9 ]{13}$/; 
+    const ISBNregex = /^[0-9 ]{10,13}$/; 
     return ISBNregex.test(ISBN);
 }
 
@@ -60,6 +60,11 @@ const isValidISBN = (ISBN) => {
 const isValidExcerpt = (excerpt) => {
     const excerptRegex = /^[A-Za-z ,]+$/;
     return excerptRegex.test(excerpt);
+}
+
+const isValidDate = (date) => {
+  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+  return dateRegex.test(date);
 }
 
 module.exports = {
@@ -73,4 +78,5 @@ module.exports = {
   isValidISBN,
   isValidObjectId,
   isValidExcerpt,
+  isValidDate
 };

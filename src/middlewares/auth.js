@@ -151,6 +151,5 @@ let userId = req.query.userId
 };
 
 
-
 module.exports.authenticate = authenticate;
 module.exports.authorise = authorise;
