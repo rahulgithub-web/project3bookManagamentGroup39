@@ -19,16 +19,6 @@ const createUser = async function (req, res) {
     let userDetails = req.body;
     let { title, name, phone, email, password } = userDetails;
 
-
-      //<------Checking Whether Request Body is empty or not----------->//
-
-    // if(Object.keys(userDetails).length ==0){
-
-    // // if(!Object.keys(userDetails).length > 1 ){
-
-    //     return res.status(400).send({status : false, msg : "All fields are mandatory."})
-    // }
-    //<------Checking Whether Request Body is empty or not----------->//
     if (Object.keys(userDetails).length == 0) {
       return res
         .status(400)
@@ -73,7 +63,7 @@ const createUser = async function (req, res) {
         return res.status(400).send({ status: false, msg: "Phone no should contains 10 digits only"});
     }
     if(!isValidPassword(password)) {
-        return res.status(400).send({ status: false, msg: "Password should contain one upperCase, lowerCase, special characters and Numbers"});
+        return res.status(400).send({ status: false, msg: "Password should contain atleast 8 characters including one upperCase, lowerCase, special characters and Numbers"});
     }
     if(!isValidPinCode(pincode)) {
         return res.status(400).send({ status: false, msg: "Pincode must contain 6 digits only"});
@@ -133,6 +123,7 @@ const userLogin = async function (req, res) {
         userId: getUsersData._id.toString(),
         iat: Math.floor(Date.now() / 1000), //issue date
         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, //expires in 24 hr
+        
       },
       "group-39"
     );
@@ -143,8 +134,8 @@ const userLogin = async function (req, res) {
       .status(200)
       .send({
         status: true,
-        message: "Author Login Succesful",
-        data: { token },
+        message: "User Login Succesful",
+        data: { userId: getUsersData._id, token: token },
       });
     console.log(token);
   } catch (err) {

@@ -90,7 +90,8 @@
 ### GET /books/:bookId
 - Returns a book with complete details including reviews. Reviews array would be in the form of Array. Response example [here](#book-details-response)
 - Return the HTTP status 200 if any documents are found. The response structure should be like [this](#successful-response-structure) 
-- If the book has no reviews then the response body should include book detail as shown [here](#book-details-response-no-reviews) and an empty array for reviewsData.
+- If the book has no reviews then the response body should include book detail as shown [here](#book-details-respo
+nse-no-reviews) and an empty array for reviewsData.
 - If no documents are found then return an HTTP status 404 with a response like [this](#error-response-structure) 
 
 ### PUT /books/:bookId
@@ -117,7 +118,7 @@
 - Return the updated book document with reviews data on successful operation. The response body should be in the form of JSON object like [this](#successful-response-structure)
 
 ### PUT /books/:bookId/review/:reviewId
-- Update the review - review, rating, reviewer's name.
+- Update the review - review, rating, reviewerBy'.
 - Check if the bookId exists and is not deleted before updating the review. Check if the review exist before updating the review. Send an error response with appropirate status code like [this](#error-response-structure) if the book does not exist
 - Get review details like review, rating, reviewer's name in request body.
 - Return the updated book document with reviews data on successful operation. The response body should be in the form of JSON object like [this](#book-details-response)
