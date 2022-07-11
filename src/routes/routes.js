@@ -9,7 +9,7 @@ const middlewares = require("../middlewares/auth");
 let { createUser, userLogin } = userController;
 let { createBook, getBooks, getBooksById, updateBook, deleteBook } =
   bookController;
-let {createReview} = reviewController;
+let {createReview, updateReview, deleteReview} = reviewController;
 let { authenticate, authorise } = middlewares;
 
 // ==========> Create User Api <=============
@@ -35,6 +35,9 @@ router.delete("/books/:bookId", authenticate, authorise, deleteBook);
 
 // ==========> Create Review Api <============= 
 router.post("/books/:bookId/review", createReview);
+
+// ==========> Delete Review Api <============
+router.delete("/books/:bookId/reviews/:reviewId", deleteReview);
 
 // ==========> This API is used for handling any invalid Endpoints <=========== 
   router.all("/*", async function (req, res) {
