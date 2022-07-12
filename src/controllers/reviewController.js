@@ -33,20 +33,30 @@ const createReview = async function (req, res) {
         .send({ status: false, msg: "All fields are mandatory!" });
     }
     let { rating, reviewedBy, review } = data;
-    if (!rating) {
-      return res.status(400).send({
-        status: false,
-        message:
-          "Rating is required it should not be 0 it must be between 1 and 6",
-      });
+    if (rating) {
+      if (!(rating >= 1 && rating <= 5)) {
+        return res
+          .status(400)
+          .send({
+            status: false,
+            message: "Please provide valid rating between 1 and 5 only",
+          });
+      }
     }
-    if (!isEmpty(reviewedBy)) {
-      return res
-        .status(400)
-        .send({ status: false, message: "Reviewed Name must be present" });
-    }
-    if (!isValidName(reviewedBy)) {
-      return res.status(400).send({ status: false, message: "" });
+    if (reviewedBy) {
+      if (!isEmpty(reviewedBy)) {
+        return res
+          .status(400)
+          .send({ status: false, message: "Reviewed Name must be present" });
+      }
+      if (!isValidName(reviewedBy)) {
+        return res
+          .status(400)
+          .send({
+            status: false,
+            message: "Provide a valid Name(only alphabets allowed",
+          });
+      }
     }
     if (!isValidName(review)) {
       return res
@@ -74,10 +84,13 @@ const createReview = async function (req, res) {
     let finalData = await reviewModel
       .find(getReview)
       .select({ isDeleted: 0, updatedAt: 0, createdAt: 0, __v: 0 });
+
+    let { ...checkBooks } = checkBook;
+    checkBooks._doc.reviewesData = finalData;
     return res.status(201).send({
       status: true,
       message: "Review added successfully",
-      data: finalData,
+      data: checkBooks._doc,
     });
   } catch (err) {
     return res.status(500).send({ status: false, message: err.message });
@@ -99,41 +112,67 @@ const updateReview = async (req, res) => {
         .status(400)
         .send({ status: false, message: "Invalid reviewId" });
     }
-    if(Object.keys(data).length == 0) {
-      return res.status(400).send({ status: false, message: "All fields are menditory"});
+    if (Object.keys(data).length == 0) {
+      return res
+        .status(400)
+        .send({ status: false, message: "All fields are menditory" });
     }
 
-    let checkBook = await bookModel.findOne({ bookId: bookId, isDeleted: false});
-    if(!checkBook) {
-      return res.status(404).send({ status: false, message: "Provide a valid bookId"})
+    let checkBook = await bookModel.findOne({ _id: bookId, isDeleted: false });
+    if (!checkBook) {
+      return res
+        .status(404)
+        .send({ status: false, message: "Provide a valid bookId" });
     }
-    let checkReview = await reviewModel.findOne({ reviewId: reviewId, isDeleted: false});
-    if(!checkReview) {
-      return res.status(404).send({ status: false, message: "Provide a valid reviewId"})
+    let checkReview = await reviewModel.findOne({
+      reviewId: reviewId,
+      isDeleted: false,
+    });
+    if (!checkReview) {
+      return res
+        .status(404)
+        .send({ status: false, message: "Provide a valid reviewId" });
     }
-    let {review, reviewedBy, rating } = data;
-    if(!isValidName(reviewedBy)) {
-      return res.status(400).send({ status: false, message: "Provide a valid name(only alphabets allowed)"})
+    let { review, reviewedBy, rating } = data;
+    if (rating) {
+      if (!(rating >= 1 && rating <= 5)) {
+        return res
+          .status(400)
+          .send({
+            status: false,
+            message: "Please provide valid rating between 1 and 5 only",
+          });
+      }
     }
-    if(rating) {
-      return res.status(400).send({ status: false, message: "Please provide valid rating between 1 and 5 only"})
+    if (!isValidName(reviewedBy)) {
+      return res
+        .status(400)
+        .send({
+          status: false,
+          message: "Provide a valid name(only alphabets allowed)",
+        });
     }
-    if(review) {
-      return res.status(400).send({ status: false, message: "Please provide a valid review"})
+    if (rating) {
+      return res
+        .status(400)
+        .send({
+          status: false,
+          message: "Please provide valid rating between 1 and 5 only",
+        });
+    }
+    if (review) {
+      return res
+        .status(400)
+        .send({ status: false, message: "Please provide a valid review" });
     }
     let updatedReview = await reviewModel.findOneAndUpdate(
-      { _id: reviewId, bookId: bookId, isDeleted: false},
+      { _id: reviewId, bookId: bookId, isDeleted: false },
       { review: review, rating: rating, reviewedBy: reviewedBy },
       { new: true }
     );
 
-    const updateBook = await bookModel.find({
-      bookId: bookId,
-      isDeleted: false,
-    }).select({__v:0, createdAt: 0, updatedAt: 0, isDeleted: 0});
-
-    let {...updatedBook} = updatedReview;
-    updatedBook._doc.reviewesData = updateBook;
+    let { ...updatedBook } = checkBook;
+    updatedBook._doc.reviewesData = updatedReview;
     res.status(200).send({
       status: true,
       message: "Successfully updated Review Details",

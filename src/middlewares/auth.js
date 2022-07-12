@@ -18,37 +18,18 @@ const authenticate = function (req, res, next) {
     res.status(500).send({ Status: 'SERVER ERROR', Msg: err.message });
   }
 };
-
-// AUTHORATION
-// const authorise = async function (req, res, next) {
-//     try {
-//       token = req.headers['x-api-key'];
-//       let bookId = req.params.bookId;
-//       let decodedToken = jwt.verify(token, 'group-39');
-//       let loggedInUser = decodedToken.userId;
-//       let bookData = await bookModel.findById({ userId: loggedInUser, _id: bookId });
-//       if (!bookData)
-//         return res.status(403).send({status: false, msg: 'YOU ARE NOT AUTHORIZED',
-//         });
-//       next();
-//     } catch (err) {
-//       res.status(500).send({ Status: 'SERVER ERROR', Msg: err.message });
-//     }
-//   };
   
-
 //<-----------------This function is used Authorisation of a user------------->//
 
 
 const authorise = async (req, res, next) => {
   try{
-  const {userId, category, subcategory} = req.query;
   const bookId = req.params.bookId;
   const data = req.body;
   
   //<-------Passing LoggedIn UserId into Route Handler------>//
-  let validAuthor = decodedToken.userId;
-  req.userId = validAuthor;
+  let validUser = decodedToken.userId;
+  req.userId = validUser;
  
   //<---------------------This is for Query Paramrter----------------->//
   if (Object.keys(req.query)!=0) {
@@ -69,7 +50,7 @@ let userId = req.query.userId
             message: "Invalid userId",
           });
         }
-        if( req.query.userId == validAuthor)
+        if( req.query.userId == validUser)
           finduserIdObj.userId = req.query.userId;
         else if(!userId) return res.status(400).send({status : false, msg : "Invalid user ID !!! "})
             else return res.status(401).send({status : false, msg : "Unauthorised!!!"})
@@ -82,8 +63,6 @@ let userId = req.query.userId
       if(req.query.subcategory)
         finduserIdObj.subcategory = req.query.subcategory;
       let fetchuserId = await bookModel.findOne(finduserIdObj).select({userId : 1, _id  : 0})
-      
-      //if(fetchuserId != validAuthor){ return res.status(403).send({msg : "you are not authorized toaccess the data!! "})}
     
       //<---------Checking Book Exist or not--------->//
       if(fetchuserId != null)
@@ -95,9 +74,7 @@ let userId = req.query.userId
       return res.status(404).send({msg : "No Data Found !! "})
      
     } catch (err) {
-
       return res.status(500).send({ status: false, msg: err.message });
-
     }
   }
 
@@ -145,7 +122,7 @@ let userId = req.query.userId
          console.log("login user",userId)
         if (!userId) return res.status(400).send({ status: false, msg: "Book Does not Exist with this book Id!!!" });
         userId = userId.userId.toString();
-        if (validAuthor != userId) return res.status(401).send({ status: false, msg: "User not Authorised !!!" });
+        if (validUser != userId) return res.status(403).send({ status: false, msg: "User not Authorised !!!" });
 
         return next();
        
