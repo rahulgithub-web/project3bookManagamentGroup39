@@ -44,6 +44,12 @@ const createBook = async function (req, res) {
         .status(400)
         .send({ status: false, message: "ISBN should be present" });
     }
+    if(!isEmpty(userId)) {
+      return res.status(400).send({ status: false, msg: "userId must be present"})
+    }
+    if(!isEmpty(releasedAt)) {
+      return res.status(400).send({ status: false, msg: "releasedAt should be present"});
+    }
     if (!isValidISBN(ISBN)) {
       return res
         .status(400)
@@ -52,7 +58,7 @@ const createBook = async function (req, res) {
     if (!isValidExcerpt(excerpt)) {
       return res.status(400).send({
         status: false,
-        message: "excerpt should be in alphabatical order",
+        message: "excerpt should contain alphabates only",
       });
     }
     let checkTitle = await bookModel.findOne({ title: title });
@@ -65,11 +71,10 @@ const createBook = async function (req, res) {
       userId: userId,
       isDelete: false,
     });
-
     if (!isValidObjectId(checkingId)) {
       return res
         .status(400)
-        .send({ status: false, message: "User with this userId is invalid" });
+        .send({ status: false, message: "Invalid userId" });
     }
     let checkISBN = await bookModel.findOne({ ISBN: ISBN });
     if (checkISBN) {
@@ -137,7 +142,6 @@ const getBooks = async function (req, res) {
       excerpt: 1,
       userId: 1,
       category: 1,
-      subcategory: 1,
       reviews: 1,
       releasedAt: 1,
     };

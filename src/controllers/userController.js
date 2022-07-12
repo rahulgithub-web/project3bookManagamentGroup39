@@ -26,44 +26,44 @@ const createUser = async function (req, res) {
     }
     let { street, city, pincode } = userDetails.address;
     if(!isEmpty(title)) {
-        return res.status(400).send({ status: false, msg: "Title should be present"});
+        return res.status(400).send({ status: false, msg: "Title must be present"});
     }
     if(!isEmpty(name)) {
-        return res.status(400).send({ status: false, msg: "Name should be present"});
+        return res.status(400).send({ status: false, msg: "Name must be present"});
     }
     if(!isEmpty(phone)) {
-        return res.status(400).send({ status: false, msg: "Phone no. should be present"});
+        return res.status(400).send({ status: false, msg: "Phone no. must be present"});
     }
     if(!isEmpty(email)) {
-        return res.status(400).send({ status: false, msg: "Email should be present"});
+        return res.status(400).send({ status: false, msg: "Email must be present"});
     }
     if(!isEmpty(password)) {
-        return res.status(400).send({ status: false, msg: "Password should be present"});
+        return res.status(400).send({ status: false, msg: "Password must be present"});
     }
     if(!userDetails.address) {
-        return res.status(400).send({ status: false, msg: "Address should contain street, city and pincode"});
+        return res.status(400).send({ status: false, msg: "Address must contain street, city and pincode"});
     }
     if(!isEmpty(street)) {
-        return res.status(400).send({ status: false, msg: "street should be present"});
+        return res.status(400).send({ status: false, msg: "street must be present"});
     }
     if(!isEmpty(city)) {
-        return res.status(400).send({ status: false, msg: "city should be present"});
+        return res.status(400).send({ status: false, msg: "city must be present"});
     }
     if(!isEmpty(pincode)) {
-        return res.status(400).send({ status: false, msg: "pincode should pe present"});
+        return res.status(400).send({ status: false, msg: "pincode must pe present"});
     }
     if(!isValidTitle(title)) {
-        return res.status(400).send({ status: false, msg: "title should contain Mr, Mrs or Miss"});
+        return res.status(400).send({ status: false, msg: "title must contain Mr, Mrs or Miss"});
     }
     if(!isValidName(name)) {
         return res.status(400).send({ status: false, msg: "Name should contain alphabet only"});
     }
     name = name.toLowerCase();
     if(!isValidPhone(phone)) {
-        return res.status(400).send({ status: false, msg: "Phone no should contains 10 digits only"});
+        return res.status(400).send({ status: false, msg: "Phone no. must contains 10 digits only"});
     }
     if(!isValidPassword(password)) {
-        return res.status(400).send({ status: false, msg: "Password should contain atleast 8 characters including one upperCase, lowerCase, special characters and Numbers"});
+        return res.status(400).send({ status: false, msg: "Password must contain atleast 8 characters including one upperCase, lowerCase, special characters and Numbers"});
     }
     if(!isValidPinCode(pincode)) {
         return res.status(400).send({ status: false, msg: "Pincode must contain 6 digits only"});
@@ -73,7 +73,7 @@ const createUser = async function (req, res) {
         return res.status(400).send({ status:false, msg: "Email id is already exist"});
     }   
     if(!isValidEmail(email)) {
-        return res.status(400).send({ status: false, msg: "Email should be in correct format"});
+        return res.status(400).send({ status: false, msg: "Email must be in correct format"});
     }
     email = email.toLowerCase();
     let phoneCheck = await userModel.findOne({ phone: phone}); 
@@ -103,20 +103,20 @@ const userLogin = async function (req, res) {
           .send({ status: false, msg: "All fields are mandatory." });
       }
     if(!isEmpty(email)) {
-        return res.status(400).send({status: false, msg: "Email should be present"});
+        return res.status(400).send({status: false, msg: "Email must be present"});
     } 
     if(!isEmpty(password)) {
-        return res.status(400).send({ status: false, msg: "Password should be present"});
+        return res.status(400).send({ status: false, msg: "Password must be present"});
     } 
     if(!isValidEmail(email)) {
         return res.status(400).send({ status: false, msg: "Email should be in correct format"});
     }
     if(!isValidPassword(password)) {
-        return res.status(400).send({ status: false, msg: "password should contain one upperCase, lowerCase, special characters and Numbers"});
+        return res.status(400).send({ status: false, msg: "password must contain one upperCase, lowerCase, special characters and Numbers"});
     }
     let getUsersData = await userModel.findOne({ email:email, password:password });
     if(!getUsersData) {
-        return res.status(401).send({ status: false, msg: "Input a valid Email or Password"});
+        return res.status(401).send({ status: false, msg: "Enter a valid Email or Password"});
     }
     let token = jwt.sign(
       {

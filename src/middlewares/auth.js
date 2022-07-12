@@ -120,7 +120,7 @@ let userId = req.query.userId
         //<------Checking Book is Exist or Not------->//
         let userId = await bookModel.findById(idCheckObj.bookId).select({ userId: 1, _id: 0});
          console.log("login user",userId)
-        if (!userId) return res.status(400).send({ status: false, msg: "Book Does not Exist with this book Id!!!" });
+        if (!userId) return res.status(400).send({ status: false, msg: "Please provide valid Id!!!" });
         userId = userId.userId.toString();
         if (validUser != userId) return res.status(403).send({ status: false, msg: "User not Authorised !!!" });
 

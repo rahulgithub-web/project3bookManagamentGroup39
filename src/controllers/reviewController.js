@@ -19,13 +19,14 @@ const createReview = async function (req, res) {
     }
 
     let checkBook = await bookModel.findOne(
-      { _id: bookId },
-      { isDeleted: false }
+      { _id: bookId, isDeleted: false}
     );
-    if (!checkBook)
+
+    if (!checkBook) {
       return res
-        .status(400)
+        .status(404)
         .send({ status: false, message: "Book is not available" });
+    }
     let data = req.body;
     if (Object.keys(data).length == 0) {
       return res
@@ -33,6 +34,9 @@ const createReview = async function (req, res) {
         .send({ status: false, msg: "All fields are mandatory!" });
     }
     let { rating, reviewedBy, review } = data;
+    if(!isEmpty(rating)) {
+      return res.status(400).send({ status: false, msg: ""})
+    }
     if (rating) {
       if (!(rating >= 1 && rating <= 5)) {
         return res
@@ -125,7 +129,7 @@ const updateReview = async (req, res) => {
         .send({ status: false, message: "Provide a valid bookId" });
     }
     let checkReview = await reviewModel.findOne({
-      reviewId: reviewId,
+      _id: reviewId,
       isDeleted: false,
     });
     if (!checkReview) {
