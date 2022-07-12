@@ -143,10 +143,10 @@ const getBooks = async function (req, res) {
     };
 
     const bookData = await bookModel
-      .find({ addObj })
+      .find( addObj )
       .select(showData)
       .sort({ title: 1 });
-
+console.log(bookData)
     if (bookData.length == 0) {
       return res.status(404).send({ status: false, message: "No Books found with the given query" });
     }
@@ -267,7 +267,7 @@ const updateBook = async function (req, res) {
         });
       }
     }
-    releasedAt = releasedAt.Date.now().toLocaleString();
+    releasedAt = Date.now();
     let updatedBooks = await bookModel.findOneAndUpdate(
       { _id: bookId },
       { title: title, excerpt: excerpt, releasedAt: releasedAt, ISBN: ISBN },
@@ -310,13 +310,14 @@ const deleteBook = async function (req, res) {
       msg: "Books data has been deleted successfully",
       data: checkBook,
     });
-  } catch (error) {
+  } 
+  catch (error) {
     return res.status(500).send({ status: false, msg: error.message });
   }
 };
 
 module.exports.createBook = createBook;
 module.exports.getBooks = getBooks;
-module.exports.deleteBook = deleteBook;
 module.exports.getBooksById = getBooksById;
 module.exports.updateBook = updateBook;
+module.exports.deleteBook = deleteBook;
