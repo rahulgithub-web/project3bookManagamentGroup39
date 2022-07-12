@@ -35,7 +35,7 @@ const createReview = async function (req, res) {
     }
     let { rating, reviewedBy, review } = data;
     if(!isEmpty(rating)) {
-      return res.status(400).send({ status: false, msg: ""})
+      return res.status(400).send({ status: false, msg: "Please provide valid rating between 1 and 5 only"})
     }
     if (rating) {
       if (!(rating >= 1 && rating <= 5)) {
