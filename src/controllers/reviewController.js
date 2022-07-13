@@ -18,9 +18,7 @@ const createReview = async function (req, res) {
         .send({ status: false, message: "Enter a valid book id" });
     }
 
-    let checkBook = await bookModel.findOne(
-      { _id: bookId, isDeleted: false}
-    );
+    let checkBook = await bookModel.findOne({ _id: bookId, isDeleted: false });
 
     if (!checkBook) {
       return res
@@ -34,17 +32,20 @@ const createReview = async function (req, res) {
         .send({ status: false, msg: "All fields are mandatory!" });
     }
     let { rating, reviewedBy, review } = data;
-    if(!isEmpty(rating)) {
-      return res.status(400).send({ status: false, msg: ""})
+    if (!isEmpty(rating)) {
+      return res
+        .status(400)
+        .send({
+          status: false,
+          msg: "Please provide valid rating between 1 and 5 only",
+        });
     }
     if (rating) {
       if (!(rating >= 1 && rating <= 5)) {
-        return res
-          .status(400)
-          .send({
-            status: false,
-            message: "Please provide valid rating between 1 and 5 only",
-          });
+        return res.status(400).send({
+          status: false,
+          message: "Please provide valid rating between 1 and 5 only",
+        });
       }
     }
     if (reviewedBy) {
@@ -54,12 +55,10 @@ const createReview = async function (req, res) {
           .send({ status: false, message: "Reviewed Name must be present" });
       }
       if (!isValidName(reviewedBy)) {
-        return res
-          .status(400)
-          .send({
-            status: false,
-            message: "Provide a valid Name(only alphabets allowed",
-          });
+        return res.status(400).send({
+          status: false,
+          message: "Provide a valid Name(only alphabets allowed",
+        });
       }
     }
     if (!isValidName(review)) {
@@ -140,23 +139,19 @@ const updateReview = async (req, res) => {
     let { review, reviewedBy, rating } = data;
     if (rating) {
       if (!(rating >= 1 && rating <= 5)) {
-        return res
-          .status(400)
-          .send({
-            status: false,
-            message: "Please provide valid rating between 1 and 5 only",
-          });
+        return res.status(400).send({
+          status: false,
+          message: "Please provide valid rating between 1 and 5 only",
+        });
       }
     }
     if (!isValidName(reviewedBy)) {
-      return res
-        .status(400)
-        .send({
-          status: false,
-          message: "Provide a valid name(only alphabets allowed)",
-        });
+      return res.status(400).send({
+        status: false,
+        message: "Provide a valid name(only alphabets allowed)",
+      });
     }
-    if (review) {
+    if (!isValidName(review)) {
       return res
         .status(400)
         .send({ status: false, message: "Please provide a valid review" });
