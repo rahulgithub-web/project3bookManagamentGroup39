@@ -37,10 +37,10 @@ router.delete("/books/:bookId", authenticate, authorise, deleteBook);
 router.post("/books/:bookId/review", createReview);
 
 // ==========> Update Review Api <============
-router.put("/books/:bookId/reviews/:reviewId", updateReview);
+router.put("/books/:bookId/review/:reviewId", updateReview);
 
 // ==========> Delete Review Api <============
-router.delete("/books/:bookId/reviews/:reviewId", deleteReview);
+router.delete("/books/:bookId/review/:reviewId", deleteReview);
 
 
 // ==========> This API is used for handling any invalid Endpoints <=========== 
