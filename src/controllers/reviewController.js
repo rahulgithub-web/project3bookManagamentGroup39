@@ -164,7 +164,7 @@ const updateReview = async (req, res) => {
           message: "Please provide valid rating between 1 and 5 only",
         });
     }
-    if (review) {
+   if(!isValidName(review)) {
       return res
         .status(400)
         .send({ status: false, message: "Please provide a valid review" });
