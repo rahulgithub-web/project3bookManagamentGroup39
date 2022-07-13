@@ -22,7 +22,7 @@ router.post("/login", userLogin);
 router.post("/books", authenticate, authorise ,createBook);
 
 // ==========> Get Books Api <============
-router.get("/books", authenticate, authorise ,getBooks);
+router.get("/books", authenticate ,getBooks);
 
 // ==========> Get Books By Id <============
 router.get("/books/:bookId", authenticate, authorise, getBooksById);
