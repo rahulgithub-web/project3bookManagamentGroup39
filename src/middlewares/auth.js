@@ -6,7 +6,7 @@ let { isValidObjectId } = require("../validator/validator");
 // AUTHENTICATION
 const authenticate = function (req, res, next) {
   try {
-    let token = req.headers["x-api-key"] || req.headers["x-api-key"];
+    let token = req.headers["x-api-key"] || req.headers["X-Api-Key"];
     if (!token)
       return res
         .status(400)

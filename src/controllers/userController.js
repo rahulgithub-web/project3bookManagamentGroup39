@@ -123,12 +123,10 @@ const userLogin = async function (req, res) {
         userId: getUsersData._id.toString(),
         iat: Math.floor(Date.now() / 1000), //issue date
         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, //expires in 24 hr
-        
       },
       "group-39"
     );
     console.log(token);
-    //   data.token = { exp, userId, expiresIn};
     res.setHeader("x-api-key", token);
     res
       .status(200)
