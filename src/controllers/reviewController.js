@@ -156,14 +156,7 @@ const updateReview = async (req, res) => {
           message: "Provide a valid name(only alphabets allowed)",
         });
     }
-    if (rating) {
-      return res
-        .status(400)
-        .send({
-          status: false,
-          message: "Please provide valid rating between 1 and 5 only",
-        });
-    }
+   
    if(!isValidName(review)) {
       return res
         .status(400)
