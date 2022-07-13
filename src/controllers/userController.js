@@ -112,7 +112,7 @@ const userLogin = async function (req, res) {
         return res.status(400).send({ status: false, msg: "Email should be in correct format"});
     }
     if(!isValidPassword(password)) {
-        return res.status(400).send({ status: false, msg: "password must contain one upperCase, lowerCase, special characters and Numbers"});
+        return res.status(400).send({ status: false, msg: "Password must contain one upperCase, lowerCase, special characters and Numbers"});
     }
     let getUsersData = await userModel.findOne({ email:email, password:password });
     if(!getUsersData) {

@@ -119,7 +119,7 @@ const authorise = async (req, res, next) => {
         if (validuserId) {
           if (!validuserId)
             return res
-              .status(400)
+              .status(404)
               .send({ status: false, msg: "Invalid Book Id !!" });
           if (!isValidObjectId(bookId)) {
             return res.status(404).send({
@@ -136,7 +136,7 @@ const authorise = async (req, res, next) => {
         console.log("login user", userId);
         if (!userId)
           return res
-            .status(400)
+            .status(404)
             .send({ status: false, msg: "Please provide valid Id!!!" });
         userId = userId.userId.toString();
         if (validUser != userId)
